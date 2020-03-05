@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Queue:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Queue_jar</output-path>
+    <root id="archive" name="Queue.jar">
+      <element id="module-output" name="Queue" />
+    </root>
+  </artifact>
+</component>

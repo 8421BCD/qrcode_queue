@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Queue:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Queue_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Queue/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Queue" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

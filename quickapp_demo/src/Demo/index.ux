@@ -1,0 +1,136 @@
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="demo-page">
+    <input class="input-text" type="text" placeholder="请先输入您的ID，后扫码" value="{{inputValue}}" onchange="updateValue"></input>
+    <!-- 点击跳转详情页 -->
+    <input class="btn" type="button" value="扫码排队" onclick="qrCode" />
+    <input class="btn" type="button" value="扫码查询" onclick="query" />
+  </div>
+</template>
+
+
+
+<script>
+import barcode from '@system.barcode'
+import prompt from '@system.prompt'
+import fetch from '@system.fetch'
+import vibrator from '@system.vibrator'
+import device from '@system.device'
+import router from '@system.router'
+
+export default {
+  // 页面级组件的数据模型，影响传入数据的覆盖机制：private内定义的属性不允许被覆盖
+  private: {
+    url: '',
+    inputValue: ''
+  },
+  updateValue (e) {
+    this.inputValue = e.text
+  },
+  qrCode()
+  {
+    const self = this
+
+    barcode.scan({
+      success: (ret) => {
+        self.url = ret.result
+        fetch.fetch(
+          {
+            url: self.url + this.inputValue + '&case=1',
+            responseType: 'text',
+            method: 'GET',
+            success: (response) => {
+              vibrator.vibrate({
+                mode: 'short'
+              })
+              prompt.showToast({
+                message: response.data
+              })
+            },
+            fail: (data, code) => {
+              vibrator.vibrate({
+                mode: 'short'
+              })
+              prompt.showToast({
+                message: '加入队列失败，请检查网络或联系开发者'
+              })
+            }
+          }
+        )
+      },
+      fail: (data, code) => {
+        vibrator.vibrate({
+          mode: 'short'
+        })
+        prompt.showToast({
+          message: '扫码组件初始化失败，请检查权限'
+        })
+      }
+    })
+  },
+  query()
+  {
+    const self = this
+
+    barcode.scan({
+      success: (ret) => {
+        self.url = ret.result
+        fetch.fetch(
+          {
+            url: self.url + this.inputValue + '&case=2',
+            responseType: 'text',
+            method: 'GET',
+            success: (response) => {
+              vibrator.vibrate({
+                mode: 'short'
+              })
+              prompt.showToast({
+                message: response.data
+              })
+            },
+            fail: (data, code) => {
+              vibrator.vibrate({
+                mode: 'short'
+              })
+              prompt.showToast({
+                message: '加入队列失败，请检查网络或联系开发者'
+              })
+            }
+          }
+        )
+      },
+      fail: (data, code) => {
+        vibrator.vibrate({
+          mode: 'short'
+        })
+        prompt.showToast({
+          message: '扫码组件初始化失败，请检查权限'
+        })
+      }
+    })
+  }
+}
+</script>
+
+<style>
+  .demo-page {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 40px;
+    text-align: center;
+  }
+
+  .btn {
+    width: 550px;
+    height: 86px;
+    margin-top: 75px;
+    border-radius: 43px;
+    background-color: #09ba07;
+    font-size: 30px;
+    color: #ffffff;
+  }
+</style>
